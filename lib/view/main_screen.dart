@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:good_hamburger_app/controllers/navigation_controller.dart';
 import 'package:good_hamburger_app/controllers/theme_controller.dart';
 import 'package:good_hamburger_app/view/home_screen.dart';
-import 'package:good_hamburger_app/view/shopping_screen.dart';
+import 'package:good_hamburger_app/view/cart_screen.dart';
 import 'package:good_hamburger_app/view/widgets/custom_bottom_navbar.dart';
 
 class MainScreen extends StatelessWidget {
@@ -24,7 +24,7 @@ class MainScreen extends StatelessWidget {
               index: navigationController.currentIndex.value,
               children: [
                 HomeScreen(),
-                ShoppingScreen(),
+                CartScreen(),
               ],
             )
           )
