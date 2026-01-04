@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:good_hamburger_app/bloc/cart/cart_bloc.dart';
+import 'package:good_hamburger_app/bloc/cart/cart_event.dart';
+import 'package:good_hamburger_app/bloc/cart/cart_state.dart';
 import 'package:good_hamburger_app/models/menu_item.dart';
 import 'package:good_hamburger_app/view/widgets/category_chips.dart';
 
@@ -7,29 +11,42 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: const Text('Good Hamburger'),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Padding( 
-              padding: const EdgeInsets.only(top: 16.0),
-              child:
-                SafeArea(
-                child: Column(
-                  children: [
-                    const CategoryChips(),
-                    const SizedBox(height: 24),
-                    _buildProductsSection(
-                      context,
-                      items: MenuData.allItems,
-                    ),
-                  ],
-                )
-              ),
+    return BlocListener<CartBloc, CartState>(
+      listener: (context, state) {
+        if (state is ValidationFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red.shade700,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          title: const Text('Good Hamburger'),
+          centerTitle: true,
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: SafeArea(
+            child: Column(
+              children: [
+                const CategoryChips(),
+                const SizedBox(height: 24),
+                _buildProductsSection(
+                  context,
+                  items: MenuData.allItems,
+                ),
+              ],
+            ),
           ),
+        ),
+      ),
     );
   }
 
@@ -71,7 +88,7 @@ class _MenuItemCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.orange.shade50,
                   borderRadius: BorderRadius.circular(12),
-                ),                
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -108,11 +125,22 @@ class _MenuItemCard extends StatelessWidget {
   }
 
   void _addToCart(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${item.name} added to cart!'),
-        duration: const Duration(seconds: 1),
-      ),
-    );
+    final previousItemCount = context.read<CartBloc>().state.itemCount;
+    context.read<CartBloc>().add(AddToCart(item));
+
+    Future.microtask(() {
+      if (!context.mounted) return;
+      final currentState = context.read<CartBloc>().state;
+      if (currentState is! ValidationFailure &&
+          currentState.itemCount > previousItemCount) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${item.name} added to cart'),
+            duration: const Duration(seconds: 1),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    });
   }
 }

@@ -15,10 +15,10 @@ class CartState extends Equatable {
     final hasSandwich = items.any(
       (item) => item.menuItem.category == MenuCategory.sandwich,
     );
-    final hasSoda = items.any(
-      (item) => item.menuItem.id == 'soda',
+    final hasSoftDrink = items.any(
+      (item) => item.menuItem.category == MenuCategory.softDrink,
     );
-    return hasSandwich && hasSoda;
+    return hasSandwich && hasSoftDrink;
   }
 
   double get discountAmount => hasComboDiscount ? subtotal * 0.20 : 0;
@@ -33,4 +33,13 @@ class CartState extends Equatable {
 
   @override
   List<Object?> get props => [items];
+}
+
+class ValidationFailure extends CartState {
+  final String message;
+
+  const ValidationFailure(this.message, {super.items});
+
+  @override
+  List<Object?> get props => [message, items];
 }

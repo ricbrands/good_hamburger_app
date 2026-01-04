@@ -1,4 +1,4 @@
-enum MenuCategory { sandwich, extra }
+enum MenuCategory { sandwich, fries, softDrink }
 
 class MenuItem {
   final String id;
@@ -60,13 +60,13 @@ class MenuData {
       id: '111',
       name: 'Fries',
       price: 2.00,
-      category: MenuCategory.extra,
+      category: MenuCategory.fries,
     ),
     MenuItem(
       id: '222',
       name: 'Soft Drink',
       price: 2.50,
-      category: MenuCategory.extra,
+      category: MenuCategory.softDrink,
     ),
   ];
 

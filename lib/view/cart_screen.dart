@@ -103,45 +103,7 @@ class CartScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.remove, size: 20),
-                                    onPressed: () {
-                                      context.read<CartBloc>().add(
-                                            DecrementQuantity(item.menuItem.id),
-                                          );
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: 30,
-                                    child: Center(
-                                      child: Text(
-                                        '${item.quantity}',
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.add, size: 20),
-                                    onPressed: () {
-                                      context.read<CartBloc>().add(
-                                            IncrementQuantity(item.menuItem.id),
-                                          );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
+                            ),                            
                             const SizedBox(width: 12),
                             SizedBox(
                               width: 70,

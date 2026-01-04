@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/cart_item.dart';
+import '../../models/menu_item.dart';
 import 'cart_event.dart';
 import 'cart_state.dart';
 
@@ -7,67 +8,43 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(const CartState()) {
     on<AddToCart>(_onAddToCart);
     on<RemoveFromCart>(_onRemoveFromCart);
-    on<IncrementQuantity>(_onIncrementQuantity);
-    on<DecrementQuantity>(_onDecrementQuantity);
     on<ClearCart>(_onClearCart);
   }
 
   void _onAddToCart(AddToCart event, Emitter<CartState> emit) {
     final items = List<CartItem>.from(state.items);
-    final existingIndex = items.indexWhere(
-      (item) => item.menuItem.id == event.item.id,
-    );
+    final existingItem = items.where(
+      (item) => item.menuItem.category == event.item.category,
+    ).firstOrNull;
 
-    if (existingIndex >= 0) {
-      items[existingIndex] = CartItem(
-        menuItem: items[existingIndex].menuItem,
-        quantity: items[existingIndex].quantity + 1,
-      );
-    } else {
-      items.add(CartItem(menuItem: event.item));
+    if (existingItem != null) {
+      final categoryName = _getCategoryDisplayName(event.item.category);
+      emit(ValidationFailure(
+        'You can only add one $categoryName per order.',
+        items: items,
+      ));
+      return;
     }
 
+    items.add(CartItem(menuItem: event.item));
     emit(state.copyWith(items: items));
+  }
+
+  String _getCategoryDisplayName(MenuCategory category) {
+    switch (category) {
+      case MenuCategory.sandwich:
+        return 'sandwich';
+      case MenuCategory.fries:
+        return 'fries';
+      case MenuCategory.softDrink:
+        return 'soft drink';
+    }
   }
 
   void _onRemoveFromCart(RemoveFromCart event, Emitter<CartState> emit) {
     final items = state.items
         .where((item) => item.menuItem.id != event.itemId)
         .toList();
-    emit(state.copyWith(items: items));
-  }
-
-  void _onIncrementQuantity(IncrementQuantity event, Emitter<CartState> emit) {
-    final items = state.items.map((item) {
-      if (item.menuItem.id == event.itemId) {
-        return CartItem(
-          menuItem: item.menuItem,
-          quantity: item.quantity + 1,
-        );
-      }
-      return item;
-    }).toList();
-
-    emit(state.copyWith(items: items));
-  }
-
-  void _onDecrementQuantity(DecrementQuantity event, Emitter<CartState> emit) {
-    final items = <CartItem>[];
-
-    for (final item in state.items) {
-      if (item.menuItem.id == event.itemId) {
-        if (item.quantity > 1) {
-          items.add(CartItem(
-            menuItem: item.menuItem,
-            quantity: item.quantity - 1,
-          ));
-        }
-        // If quantity is 1, don't add (effectively removes the item)
-      } else {
-        items.add(item);
-      }
-    }
-
     emit(state.copyWith(items: items));
   }
 
