@@ -6,8 +6,26 @@ import 'package:good_hamburger_app/bloc/cart/cart_state.dart';
 import 'package:good_hamburger_app/models/menu_item.dart';
 import 'package:good_hamburger_app/view/widgets/category_chips.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  FilterCategory _selectedCategory = FilterCategory.all;
+
+  List<MenuItem> get _filteredItems {
+    switch (_selectedCategory) {
+      case FilterCategory.all:
+        return MenuData.allItems;
+      case FilterCategory.sandwiches:
+        return MenuData.sandwiches;
+      case FilterCategory.extras:
+        return MenuData.extras;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +54,18 @@ class HomeScreen extends StatelessWidget {
           child: SafeArea(
             child: Column(
               children: [
-                const CategoryChips(),
+                CategoryChips(
+                  selectedCategory: _selectedCategory,
+                  onCategorySelected: (category) {
+                    setState(() {
+                      _selectedCategory = category;
+                    });
+                  },
+                ),
                 const SizedBox(height: 24),
                 _buildProductsSection(
                   context,
-                  items: MenuData.allItems,
+                  items: _filteredItems,
                 ),
               ],
             ),
@@ -53,10 +78,10 @@ class HomeScreen extends StatelessWidget {
   Widget _buildProductsSection(
     BuildContext context, {
     required List<MenuItem> items,
-  }){
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [        
+      children: [
         const SizedBox(height: 12),
         ...items.map((item) => _MenuItemCard(item: item)),
       ],
