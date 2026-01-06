@@ -140,7 +140,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           if (cartState.hasComboDiscount) ...[
                             const SizedBox(height: 8),
                             _buildPriceRow(
-                              'Combo Discount (20%)',
+                              'Combo Discount (${cartState.discountPercentage}%)',
                               '-\$${cartState.discountAmount.toStringAsFixed(2)}',
                               isDiscount: true,
                             ),

@@ -172,7 +172,7 @@ class CartScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Combo Discount (20%)',
+                        'Combo Discount (${state.discountPercentage}%)',
                         style: TextStyle(
                           color: Colors.green.shade700,
                           fontWeight: FontWeight.w500,

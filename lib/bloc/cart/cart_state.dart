@@ -11,17 +11,32 @@ class CartState extends Equatable {
 
   double get subtotal => items.fold(0, (sum, item) => sum + item.totalPrice);
 
-  bool get hasComboDiscount {
-    final hasSandwich = items.any(
-      (item) => item.menuItem.category == MenuCategory.sandwich,
-    );
-    final hasSoftDrink = items.any(
-      (item) => item.menuItem.category == MenuCategory.softDrink,
-    );
-    return hasSandwich && hasSoftDrink;
+  bool get _hasSandwich => items.any(
+        (item) => item.menuItem.category == MenuCategory.sandwich,
+      );
+
+  bool get _hasFries => items.any(
+        (item) => item.menuItem.category == MenuCategory.fries,
+      );
+
+  bool get _hasSoftDrink => items.any(
+        (item) => item.menuItem.category == MenuCategory.softDrink,
+      );
+
+  bool get hasComboDiscount => discountPercentage > 0;
+
+  int get discountPercentage {
+    if (_hasSandwich && _hasFries && _hasSoftDrink) {
+      return 20;
+    } else if (_hasSandwich && _hasSoftDrink) {
+      return 15;
+    } else if (_hasSandwich && _hasFries) {
+      return 10;
+    }
+    return 0;
   }
 
-  double get discountAmount => hasComboDiscount ? subtotal * 0.20 : 0;
+  double get discountAmount => subtotal * (discountPercentage / 100);
 
   double get total => subtotal - discountAmount;
 
