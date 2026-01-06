@@ -37,6 +37,7 @@ class OrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<Result<Order>> saveOrder({
+    required String customerName,
     required List<CartItem> items,
     required double subtotal,
     required double discount,
@@ -52,6 +53,7 @@ class OrderRepositoryImpl implements OrderRepository {
 
       final order = Order(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
+        customerName: customerName,
         items: items,
         subtotal: subtotal,
         discount: discount,

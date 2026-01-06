@@ -16,6 +16,7 @@ class OrderService {
   }
 
   Future<void> saveOrder({
+    required String customerName,
     required List<CartItem> items,
     required double subtotal,
     required double discount,
@@ -26,6 +27,7 @@ class OrderService {
 
     final order = Order(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
+      customerName: customerName,
       items: items,
       subtotal: subtotal,
       discount: discount,

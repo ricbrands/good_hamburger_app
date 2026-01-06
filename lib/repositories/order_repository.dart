@@ -7,6 +7,7 @@ abstract class OrderRepository {
   Future<Result<List<Order>>> getOrders();
 
   Future<Result<Order>> saveOrder({
+    required String customerName,
     required List<CartItem> items,
     required double subtotal,
     required double discount,

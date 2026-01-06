@@ -7,8 +7,22 @@ import '../bloc/orders/orders_bloc.dart';
 import '../bloc/orders/orders_event.dart';
 import '../bloc/orders/orders_state.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
+
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +50,45 @@ class CheckoutScreen extends StatelessWidget {
           builder: (context, cartState) {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Order Summary',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Your Name',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your name',
+                        prefixIcon: const Icon(Icons.person_outline),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                  ),
-                  const SizedBox(height: 16),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                      ),
+                      textCapitalization: TextCapitalization.words,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your name to place the order';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Order Summary',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
                   Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -168,7 +211,8 @@ class CheckoutScreen extends StatelessWidget {
                       );
                     },
                   ),
-                ],
+                  ],
+                ),
               ),
             );
           },
@@ -227,8 +271,13 @@ class CheckoutScreen extends StatelessWidget {
   }
 
   void _placeOrder(BuildContext context, CartState cartState) {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     final cartBloc = context.read<CartBloc>();
     context.read<OrdersBloc>().add(PlaceOrder(
+          customerName: _nameController.text.trim(),
           items: cartBloc.getItemsCopy(),
           subtotal: cartState.subtotal,
           discount: cartState.discountAmount,

@@ -2,6 +2,7 @@ import 'cart_item.dart';
 
 class Order {
   final String id;
+  final String customerName;
   final List<CartItem> items;
   final double subtotal;
   final double discount;
@@ -10,6 +11,7 @@ class Order {
 
   Order({
     required this.id,
+    required this.customerName,
     required this.items,
     required this.subtotal,
     required this.discount,
@@ -19,6 +21,7 @@ class Order {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'customerName': customerName,
         'items': items.map((item) => item.toJson()).toList(),
         'subtotal': subtotal,
         'discount': discount,
@@ -28,6 +31,7 @@ class Order {
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         id: json['id'],
+        customerName: json['customerName'] ?? '',
         items: (json['items'] as List)
             .map((item) => CartItem.fromJson(item))
             .toList(),

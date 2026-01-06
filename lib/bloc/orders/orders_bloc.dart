@@ -46,6 +46,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     emit(state.copyWith(status: OrdersStatus.placing, clearError: true));
 
     final result = await _orderRepository.saveOrder(
+      customerName: event.customerName,
       items: event.items,
       subtotal: event.subtotal,
       discount: event.discount,
