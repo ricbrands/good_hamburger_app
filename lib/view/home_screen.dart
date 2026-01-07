@@ -15,6 +15,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   FilterCategory _selectedCategory = FilterCategory.all;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMenuItems();
+  }
+
+  Future<void> _loadMenuItems() async {
+    await MenuData.loadMenuItems();
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   List<MenuItem> get _filteredItems {
     switch (_selectedCategory) {
@@ -49,28 +65,45 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: SafeArea(
-            child: Column(
-              children: [
-                CategoryChips(
-                  selectedCategory: _selectedCategory,
-                  onCategorySelected: (category) {
-                    setState(() {
-                      _selectedCategory = category;
-                    });
-                  },
+        body: _isLoading
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Loading...',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 24),
-                _buildProductsSection(
-                  context,
-                  items: _filteredItems,
+              )
+            : Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      CategoryChips(
+                        selectedCategory: _selectedCategory,
+                        onCategorySelected: (category) {
+                          setState(() {
+                            _selectedCategory = category;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      _buildProductsSection(
+                        context,
+                        items: _filteredItems,
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }

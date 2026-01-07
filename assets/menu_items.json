@@ -1,0 +1,36 @@
+{
+  "sandwiches": [
+    {
+      "id": "123",
+      "name": "Burger",
+      "price": 5.00,
+      "category": "sandwich"
+    },
+    {
+      "id": "456",
+      "name": "Egg",
+      "price": 4.50,
+      "category": "sandwich"
+    },
+    {
+      "id": "789",
+      "name": "Bacon",
+      "price": 7.00,
+      "category": "sandwich"
+    }
+  ],
+  "extras": [
+    {
+      "id": "111",
+      "name": "Fries",
+      "price": 2.00,
+      "category": "fries"
+    },
+    {
+      "id": "222",
+      "name": "Soft Drink",
+      "price": 2.50,
+      "category": "softDrink"
+    }
+  ]
+}

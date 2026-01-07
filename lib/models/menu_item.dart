@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
+
 enum MenuCategory { sandwich, fries, softDrink }
 
 class MenuItem {
@@ -5,7 +8,6 @@ class MenuItem {
   final String name;
   final double price;
   final MenuCategory category;
-
 
   const MenuItem({
     required this.id,
@@ -27,48 +29,39 @@ class MenuItem {
     return MenuItem(
       id: json['id'],
       name: json['name'],
-      price: json['price'],
+      price: (json['price'] as num).toDouble(),
       category: MenuCategory.values.firstWhere((e) => e.name == json['category']),
     );
   }
 }
 
 class MenuData {
-  static const List<MenuItem> sandwiches = [
-    MenuItem(
-      id: '123',
-      name: 'Burger',
-      price: 5.00,
-      category: MenuCategory.sandwich,
-    ),
-    MenuItem(
-      id: '456',
-      name: 'Egg',
-      price: 4.50,
-      category: MenuCategory.sandwich,
-    ),
-    MenuItem(
-      id: '789',
-      name: 'Bacon',
-      price: 7.00,
-      category: MenuCategory.sandwich,
-    ),
-  ];
+  static List<MenuItem> _sandwiches = [];
+  static List<MenuItem> _extras = [];
+  static bool _isLoaded = false;
 
-  static const List<MenuItem> extras = [
-    MenuItem(
-      id: '111',
-      name: 'Fries',
-      price: 2.00,
-      category: MenuCategory.fries,
-    ),
-    MenuItem(
-      id: '222',
-      name: 'Soft Drink',
-      price: 2.50,
-      category: MenuCategory.softDrink,
-    ),
-  ];
+  static List<MenuItem> get sandwiches => _sandwiches;
+  static List<MenuItem> get extras => _extras;
+  static List<MenuItem> get allItems => [..._sandwiches, ..._extras];
+  static bool get isLoaded => _isLoaded;
 
-  static List<MenuItem> get allItems => [...sandwiches, ...extras];
+  static Future<void> loadMenuItems() async {
+    if (_isLoaded) return;
+
+    // Simulate network delay
+    await Future.delayed(const Duration(seconds: 1));
+
+    final jsonString = await rootBundle.loadString('assets/menu_items.json');
+    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+
+    _sandwiches = (jsonData['sandwiches'] as List)
+        .map((item) => MenuItem.fromJson(item))
+        .toList();
+
+    _extras = (jsonData['extras'] as List)
+        .map((item) => MenuItem.fromJson(item))
+        .toList();
+
+    _isLoaded = true;
+  }
 }
