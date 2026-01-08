@@ -11,6 +11,12 @@ The Menu screen displays a list of items, and you can select and add an iten to 
 The Cart screen displays a list of selected items, with the subtotal amount, discounts and total amount. It also have a button to the Checkout screen. The Checkout screen have a input to place user name, the order summary and a button to place order;
 - Orders screen
 The Orders screen displays a list of all orders with the order id, user name, total amount, saved amount and timestamp. It also have a clear history buttom.
+<img width="215" height="497" alt="Menu Screen" src="https://github.com/user-attachments/assets/f1e91a65-0190-48e8-a385-be5097f31f08" />
+<img width="218" height="494" alt="Cart Screen" src="https://github.com/user-attachments/assets/32673ae1-633a-40e2-9d13-8e06397e039b" />
+<img width="218" height="497" alt="Checkout Screen" src="https://github.com/user-attachments/assets/5e2c1013-85cf-4c41-912d-30d448df6af1" />
+<img width="218" height="499" alt="Orders Screen" src="https://github.com/user-attachments/assets/a1cd238e-729e-4ddd-9ede-effa7e8336a5" />
+
+
 
 # Technologies
 
