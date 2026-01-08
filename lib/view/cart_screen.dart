@@ -117,6 +117,19 @@ class CartScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            const SizedBox(width: 8),
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Colors.red.shade400,
+                              ),
+                              tooltip: 'Remove item',
+                              onPressed: () => _showRemoveItemDialog(
+                                context,
+                                item.menuItem.id,
+                                item.menuItem.name,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -256,6 +269,46 @@ class CartScreen extends StatelessWidget {
               Navigator.pop(dialogContext);
             },
             child: const Text('Clear'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRemoveItemDialog(BuildContext context, String itemId, String itemName) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.red.shade100,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.delete_outline, color: Colors.red.shade700),
+            ),
+            const SizedBox(width: 12),
+            const Text('Remove Item?'),
+          ],
+        ),
+        content: Text('Are you sure you want to remove "$itemName" from your cart?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.red,
+            ),
+            onPressed: () {
+              context.read<CartBloc>().add(RemoveFromCart(itemId));
+              Navigator.pop(dialogContext);
+            },
+            child: const Text('Remove'),
           ),
         ],
       ),
