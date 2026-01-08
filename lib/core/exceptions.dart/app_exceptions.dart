@@ -1,4 +1,3 @@
-/// Base exception class for all app-specific exceptions
 abstract class AppException implements Exception {
   final String message;
   final String? code;
@@ -14,7 +13,6 @@ abstract class AppException implements Exception {
   String toString() => 'AppException: $message (code: $code)';
 }
 
-/// Exception thrown when storage operations fail
 class StorageException extends AppException {
   const StorageException({
     required super.message,
@@ -44,7 +42,6 @@ class StorageException extends AppException {
       );
 }
 
-/// Exception thrown when order operations fail
 class OrderException extends AppException {
   const OrderException({
     required super.message,
@@ -79,7 +76,6 @@ class OrderException extends AppException {
       );
 }
 
-/// Exception thrown when cart operations fail
 class CartException extends AppException {
   const CartException({
     required super.message,
@@ -100,7 +96,6 @@ class CartException extends AppException {
       );
 }
 
-/// Result type for operations that can fail
 class Result<T> {
   final T? data;
   final AppException? error;

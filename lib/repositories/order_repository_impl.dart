@@ -6,7 +6,6 @@ import '../models/cart_item.dart';
 import '../models/order.dart';
 import 'order_repository.dart';
 
-/// Implementation of OrderRepository using SharedPreferences
 class OrderRepositoryImpl implements OrderRepository {
   static const String _ordersKey = 'orders';
 
