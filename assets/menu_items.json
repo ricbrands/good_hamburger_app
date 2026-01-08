@@ -4,19 +4,22 @@
       "id": "123",
       "name": "Burger",
       "price": 5.00,
-      "category": "sandwich"
+      "category": "sandwich",
+      "image": "assets/images/burger.jpg"
     },
     {
       "id": "456",
       "name": "Egg",
       "price": 4.50,
-      "category": "sandwich"
+      "category": "sandwich",
+      "image": "assets/images/egg.jpg"
     },
     {
       "id": "789",
       "name": "Bacon",
       "price": 7.00,
-      "category": "sandwich"
+      "category": "sandwich",
+      "image": "assets/images/bacon.jpg"
     }
   ],
   "extras": [
@@ -24,13 +27,15 @@
       "id": "111",
       "name": "Fries",
       "price": 2.00,
-      "category": "fries"
+      "category": "fries",
+      "image": "assets/images/fries.jpg"
     },
     {
       "id": "222",
       "name": "Soft Drink",
       "price": 2.50,
-      "category": "softDrink"
+      "category": "softDrink",
+      "image": "assets/images/soft_drink.jpg"
     }
   ]
 }

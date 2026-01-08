@@ -8,12 +8,14 @@ class MenuItem {
   final String name;
   final double price;
   final MenuCategory category;
+  final String image;
 
   const MenuItem({
     required this.id,
     required this.name,
     required this.price,
     required this.category,
+    required this.image,
   });
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class MenuItem {
       'name': name,
       'price': price,
       'category': category.name,
+      'image': image,
     };
   }
 
@@ -31,6 +34,7 @@ class MenuItem {
       name: json['name'],
       price: (json['price'] as num).toDouble(),
       category: MenuCategory.values.firstWhere((e) => e.name == json['category']),
+      image: json['image'],
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:good_hamburger_app/controllers/navigation_controller.dart';
-import 'package:good_hamburger_app/controllers/theme_controller.dart';
 import 'package:good_hamburger_app/view/home_screen.dart';
 import 'package:good_hamburger_app/view/cart_screen.dart';
 import 'package:good_hamburger_app/view/order_history_screen.dart';
@@ -14,7 +13,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final NavigationController navigationController = Get.find<NavigationController>();
 
-    return GetBuilder<ThemeController>(
+    return GetBuilder<NavigationController>(
       builder: (themeController) => Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: AnimatedSwitcher(

@@ -4,12 +4,13 @@ import 'package:good_hamburger_app/models/cart_item.dart';
 import 'package:good_hamburger_app/models/menu_item.dart';
 
 void main() {
-  group('CartState Discount Calculation', () {    
+  group('CartState Discount Calculation', () {
     const sandwich = MenuItem(
       id: '1',
       name: 'Burger',
       price: 10.00,
       category: MenuCategory.sandwich,
+      image: 'assets/images/burger.jpg',
     );
 
     const fries = MenuItem(
@@ -17,6 +18,7 @@ void main() {
       name: 'Fries',
       price: 5.00,
       category: MenuCategory.fries,
+      image: 'assets/images/fries.jpg',
     );
 
     const softDrink = MenuItem(
@@ -24,6 +26,7 @@ void main() {
       name: 'Soft Drink',
       price: 5.00,
       category: MenuCategory.softDrink,
+      image: 'assets/images/soft_drink.jpg',
     );
 
     group('discountPercentage', () {

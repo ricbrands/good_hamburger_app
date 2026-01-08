@@ -140,12 +140,13 @@ class _MenuItemCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
-                  borderRadius: BorderRadius.circular(12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  item.image,
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(width: 16),
